@@ -1,115 +1,23 @@
-import Foundation
-
-//: #### Array based implementation
-final class ArrayStack<Element> {
-    private var store: [Element]
-    
-    var isEmpty: Bool {
-        return store.isEmpty
-    }
-    
-    var count: Int {
-        return store.count
-    }
-    
-    init() {
-        store = []
-    }
-    
-    func push(_ element: Element) {
-        store.append(element)
-    }
-    
-    func pop() -> Element? {
-        guard !store.isEmpty else { return nil }
-        return store.removeLast()
-    }
-    
-    func peek() -> Element? {
-        return store.last
-    }
-}
-
-var s1 = ArrayStack<Int>()
-s1.isEmpty
-s1.peek()
-s1.push(5)
-s1.peek()
-s1.isEmpty
-
-final class LinkedListStack<Element> {
-    private class Node {
-        var value: Element
-        var next: Node?
-        
-        init(value: Element, next: Node? = nil) {
-            self.value = value
-            self.next = next
-        }
-    }
-    
-    private var head: Node?
-    
-    var isEmpty: Bool {
-        return head == nil
-    }
-    
-    private(set) var count: Int = 0
-    
-    init() { }
-    
-    func push(_ element: Element) {
-        let newElement = Node(value: element, next: head)
-        head = newElement
-        count += 1
-    }
-    
-    func pop() -> Element? {
-        let element = head
-        head = head?.next
-        count = max(0, count - 1)
-        return element?.value
-    }
-    
-    func peek() -> Element? {
-        return head?.value
-    }
-}
-
-var s2 = LinkedListStack<Int>()
-s2.isEmpty
-s2.peek()
-s2.push(5)
-s2.peek()
-s2.isEmpty
-s2.push(10)
-s2.push(20)
-s2.count
-s2.pop()
-
-
 public enum TestRunResult {
     case success
     case failure(String)
 }
 
-public protocol StackProtocol<Element> {
+public protocol StackProtocol {
     associatedtype Element
     var count: Int { get }
-    
-    init()
     
     func push(_ element: Element)
     func pop() -> Element?
     func peek() -> Element?
 }
 
-public class StackTests<StackType: StackProtocol> {
+public class StackTests {
     
-    let stack: StackType
+    private let implementation: StackProtocol.Type
     
-    init(stack: StackProtocol) {
-        self.stack = stack
+    init(implementation: StackProtocol) {
+        self.implementation = implementation
     }
     
     func test_init_createsStackWithNoElement() -> TestRunResult {
@@ -198,8 +106,7 @@ public class StackTests<StackType: StackProtocol> {
         }
     }
     
-    public static func runSuite(forStackType StackType: StackType.Type) -> [String: TestRunResult] {
-            
+    public static func runSuite(forImplementation implementation: StackProtocol.Type) -> [String: TestRunResult] {
         return [
             "test_init_createsStackWithNoElement": StackTests().test_init_createsStackWithNoElement(),
             "test_push_increasesCountByOne": StackTests().test_push_increasesCountByOne(),
@@ -219,8 +126,8 @@ public class StackTests<StackType: StackProtocol> {
         return "Expected \(expected), got \(got)"
     }
     
-    private func makeStack(ofCount count: Int = 0) -> StackType<Int> {
-        let stack = StackType<Int>()
+    private func makeStack(ofCount count: Int = 0) -> ArrayStack<Int> {
+        let stack = ArrayStack<Int>()
         (0..<count).forEach { number in
             stack.push(number + 1)
         }
@@ -228,8 +135,5 @@ public class StackTests<StackType: StackProtocol> {
     }
 }
 
-extension ArrayStack: StackProtocol { }
 
-extension LinkedListStack: StackProtocol {}
 
-StackTests.runSuite(forStackType: ArrayStack<Int>)
