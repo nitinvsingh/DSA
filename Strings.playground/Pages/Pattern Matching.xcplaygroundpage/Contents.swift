@@ -23,3 +23,37 @@ import Foundation
 //: In case no characters matched, slide the window by 1 index and begin matching.
 //: - Callout(Time Complexity):
 //: O(n)
+//:
+
+
+/*
+ String = "ababc"
+ PP(1) = 0
+ PP(2) = 0
+ PP(3) = "", "a", "ab" | S(3) = "", "a", "ba", "aba" = 1
+ PP(4) = "", "a", "ab", "aba", | S(4) = "", "b", "ab", "bab", "abab" = 2
+ PP(5) = "", "a", "ab", "aba", "abab" | S(5) = "", "c", "bc", "abc", "babc", "ababc" = 0
+ 
+ 
+ Input = "ababab"
+ PropPrefix(1) = "" | Suffix(1) = "", "a" | LPS(1) = 0
+ PropPrefix(2) = "", "a" | Suffix(2) = "", "b", "ab" | LPS(2) = 0
+ PropPrefix(3) = "", "a", "ab" | Suffix(3) = "", "a", "ba" "aba" | LPS(3) = 1
+ PropPrefix(4) = "", "a", "ab", "aba" | Suffix(4) = "", "b", "ab", "bab", "abab" | LPS(4) = 2
+ PropPrefix(5) = "", "a", "ab", "aba", "abab" | Suffix(5) = "", "a", "ba", "aba", "baba", "ababa" | LPS(5) = 3
+ PropPrefix(6) = "", "a", "ab", "aba", "abab", "ababa" | Suffix(6) = "", "b", "ab", "bab", "abab", "babab", "ababab" | LPS(6) = 4
+ 
+ Input = "aaaa"
+ PP(1) -> "" | S(1) -> "", "a" | LPS(1) -> 0
+ PP(2) -> "", "a" | S(2) -> "", "a", "aa" | LPS(2) -> 1
+ PP(3) -> "", "a", "aa" | S(3) -> "", "a", "aa", "aaa" | LPS(3) -> 2
+ PP(4) -> "", "a", "aa", "aaa" | S(4) -> "", "a", "aa", "aaa", "aaaa" | LPS(4) -> 3
+ 
+ Input = "aabbcc"
+ PP(1) -> "" | S(1) -> "", a | LPS(1) -> 0
+ PP(2) -> "", "a" | S(2) -> "", "a", "aa" | LPS(2) -> 1
+ PP(3) -> "", "a", "aa" | S(3) -> "", "b", "ab", "aab" | LPS(3) -> 0
+ PP(4) -> "", "a", "aa", "aab" | S(4) -> "", "b", "bb", "abb", "aabb" | LPS(4) -> 0
+ PP(5) -> "", "a", "aa", "aab", "aabb" | S(5) -> "", "c", "bc", "bbc", "abbc", "aabbc" | LPS(5) -> 0
+ PP(6) -> "", "a", "aa", "aab", "aabb", "aabbc" | S(6) -> "", "c", "cc", "bcc", ,"bbcc", "abbcc", "aabbcc" | LPS(6) -> 0
+ */
